@@ -48,19 +48,19 @@ export default function GeneralReceiptPage() {
     finally { setSaving(false); setTimeout(() => setMsg(""), 4000); }
   }
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none";
+  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none";
 
   if (loading) return <div className="p-8 text-center text-gray-400">Loading...</div>;
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">General Receipt</h2>
       </div>
       <div className="p-6">
         {msg && <div className={`text-sm rounded-lg p-3 mb-4 ${msg.startsWith("Error") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>{msg}</div>}
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input type="date" value={form.date} onChange={(e) => setForm({...form, date: e.target.value})} className={inputClass} />
@@ -88,7 +88,7 @@ export default function GeneralReceiptPage() {
           </div>
         </div>
         <div className="mt-6 flex justify-center">
-          <button onClick={handleSubmit} disabled={saving} className="bg-purple-600 text-white px-8 py-2.5 rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50">
+          <button onClick={handleSubmit} disabled={saving} className="bg-teal-600 text-white px-8 py-2.5 rounded-lg hover:bg-teal-700 transition font-medium disabled:opacity-50">
             {saving ? "Saving..." : "Submit"}
           </button>
         </div>
@@ -99,7 +99,7 @@ export default function GeneralReceiptPage() {
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Recent General Receipts</h3>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-purple-50">
+                <tr className="bg-slate-50">
                   <th className="text-left px-4 py-2 font-semibold text-gray-700">Date</th>
                   <th className="text-left px-4 py-2 font-semibold text-gray-700">Particular</th>
                   <th className="text-right px-4 py-2 font-semibold text-gray-700">Amount</th>

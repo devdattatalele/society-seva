@@ -42,25 +42,25 @@ export default function DuesRegisterPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Dues Register</h2>
       </div>
       <div className="p-6">
         <div className="flex gap-4 mb-6 items-end justify-center">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Month</label>
-            <select value={month} onChange={(e) => setMonth(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
+            <select value={month} onChange={(e) => setMonth(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none">
               <option value="">Select Month</option>
               {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
-            <select value={year} onChange={(e) => setYear(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
+            <select value={year} onChange={(e) => setYear(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none">
               {["2022","2023","2024","2025","2026","2027"].map(y => <option key={y}>{y}</option>)}
             </select>
           </div>
-          <button onClick={handleSearch} className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition flex items-center gap-2">
+          <button onClick={handleSearch} className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition flex items-center gap-2">
             <Search size={16} /> Search
           </button>
           <button onClick={() => window.print()} className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function DuesRegisterPage() {
 
         {/* Summary cards */}
         {searched && entries.length > 0 && (
-          <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-blue-50 rounded-lg p-3 text-center">
               <div className="text-xs text-gray-500">Total Billed</div>
               <div className="text-lg font-bold text-blue-700">{formatCurrency(totalBilled)}</div>
@@ -105,7 +105,7 @@ export default function DuesRegisterPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-purple-50">
+              <tr className="bg-slate-50">
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Unit No.</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Member Name</th>

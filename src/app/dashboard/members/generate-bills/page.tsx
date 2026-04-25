@@ -70,7 +70,7 @@ export default function GenerateBillsPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Generate Bills</h2>
       </div>
       <div className="p-6">
@@ -80,17 +80,17 @@ export default function GenerateBillsPage() {
         <div className="flex gap-4 items-end justify-center mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Month</label>
-            <select value={month} onChange={(e) => { setMonth(e.target.value); setPreview(null); setResult(null); }} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none min-w-[150px]">
+            <select value={month} onChange={(e) => { setMonth(e.target.value); setPreview(null); setResult(null); }} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none min-w-[150px]">
               {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
-            <select value={year} onChange={(e) => { setYear(e.target.value); setPreview(null); setResult(null); }} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
+            <select value={year} onChange={(e) => { setYear(e.target.value); setPreview(null); setResult(null); }} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none">
               {["2023","2024","2025","2026","2027"].map(y => <option key={y}>{y}</option>)}
             </select>
           </div>
-          <button onClick={handlePreview} disabled={loading} className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50">
+          <button onClick={handlePreview} disabled={loading} className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition font-medium disabled:opacity-50">
             {loading ? "Loading..." : "Preview Bills"}
           </button>
         </div>
@@ -99,7 +99,7 @@ export default function GenerateBillsPage() {
         {preview && (
           <>
             {/* Tariff breakdown */}
-            <div className="bg-purple-50 rounded-lg p-4 mb-4">
+            <div className="bg-slate-50 rounded-lg p-4 mb-4">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Tariff Breakdown per Member</h4>
               <div className="grid grid-cols-2 gap-2 text-sm">
                 {preview.tariffs.map((t, i) => (
@@ -127,7 +127,7 @@ export default function GenerateBillsPage() {
             </div>
 
             {/* Summary cards */}
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               <div className="bg-green-50 rounded-lg p-3 text-center">
                 <div className="text-xs text-gray-500">Bills to Generate</div>
                 <div className="text-2xl font-bold text-green-700">{newBills.length}</div>
@@ -146,7 +146,7 @@ export default function GenerateBillsPage() {
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-purple-50">
+                  <tr className="bg-slate-50">
                     <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
                     <th className="text-left px-4 py-2 font-semibold text-gray-700">Unit</th>
                     <th className="text-left px-4 py-2 font-semibold text-gray-700">Member</th>

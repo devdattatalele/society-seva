@@ -27,13 +27,13 @@ export default function TariffOrderPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Change Tariff Order</h2>
       </div>
       <div className="p-6">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-purple-50">
+            <tr className="bg-slate-50">
               <th className="text-left px-4 py-2 font-semibold text-gray-700 w-12"></th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Order</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Tariff Name</th>
@@ -55,7 +55,7 @@ export default function TariffOrderPage() {
           </tbody>
         </table>
         <div className="mt-4 flex justify-center">
-          <button className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition font-medium">
+          <button className="bg-teal-600 text-white px-8 py-2 rounded-lg hover:bg-teal-700 transition font-medium">
             Save Order
           </button>
         </div>

@@ -53,7 +53,7 @@ export default function HouseHolderPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">House Holder</h2>
       </div>
       <div className="p-6">
@@ -66,13 +66,13 @@ export default function HouseHolderPage() {
           </div>
           <div className="relative">
             <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-            <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search..." className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none" />
+            <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search..." className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none" />
           </div>
         </div>
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-purple-50">
+            <tr className="bg-slate-50">
               <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Unit No.</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Member Name</th>
@@ -94,7 +94,7 @@ export default function HouseHolderPage() {
                 <td className="px-4 py-2">{m.email || "-"}</td>
                 <td className="px-4 py-2">{m.memberNo || "-"}</td>
                 <td className="px-4 py-2">
-                  <button onClick={() => openFlatDetails(m)} className="text-purple-600 hover:text-purple-800 flex items-center gap-1 text-xs font-medium">
+                  <button onClick={() => openFlatDetails(m)} className="text-teal-600 hover:text-teal-700 flex items-center gap-1 text-xs font-medium">
                     <Eye size={14} /> Details
                   </button>
                 </td>
@@ -117,7 +117,7 @@ export default function HouseHolderPage() {
       {selectedMember && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setSelectedMember(null)}>
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-y-auto m-4" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-purple-200 px-6 py-3 rounded-t-xl flex justify-between items-center">
+            <div className="bg-slate-200 px-6 py-3 rounded-t-xl flex justify-between items-center">
               <h3 className="text-base font-semibold text-gray-800">Flat Details</h3>
               <button onClick={() => setSelectedMember(null)} className="text-gray-600 hover:text-gray-900"><X size={20} /></button>
             </div>
@@ -125,11 +125,11 @@ export default function HouseHolderPage() {
               {/* Member info card */}
               <div className="flex gap-6 mb-6">
                 <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center text-2xl font-bold text-purple-600">
+                  <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-2xl font-bold text-teal-600">
                     {selectedMember.name.charAt(0)}
                   </div>
                   <p className="mt-2 font-semibold text-sm">{selectedMember.name}</p>
-                  <div className="mt-1 bg-purple-500 text-white rounded-full px-4 py-1 text-xs font-medium">
+                  <div className="mt-1 bg-slate-500 text-white rounded-full px-4 py-1 text-xs font-medium">
                     {selectedMember.units[0]?.unitNo || "-"}
                   </div>
                 </div>

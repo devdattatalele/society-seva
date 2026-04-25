@@ -28,29 +28,29 @@ function BookCard({ label, href }: { label: string; href: string }) {
 
         {/* Shadow / back page offset */}
         <div
-          className="absolute rounded-2xl bg-purple-200/60"
+          className="absolute rounded-2xl bg-slate-200/60"
           style={{ top: 6, left: 6, right: -2, bottom: -2 }}
         />
 
         {/* Main book body */}
         <div className="absolute inset-0 rounded-2xl overflow-hidden flex shadow-lg">
           {/* Left section - light page */}
-          <div className="flex-1 bg-gradient-to-br from-purple-50 to-purple-100" />
+          <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100" />
 
           {/* Spine center stripe */}
-          <div className="w-[10px] bg-purple-400" />
-          <div className="w-[2px] bg-purple-300" />
+          <div className="w-[10px] bg-slate-400" />
+          <div className="w-[2px] bg-slate-300" />
 
           {/* Right cover section */}
-          <div className="w-[55px] bg-gradient-to-b from-purple-400 to-purple-500 relative">
+          <div className="w-[55px] bg-gradient-to-b from-[#1e3a5f] to-[#162d4a] relative">
             {/* Small circle decoration on cover */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-purple-300/60" />
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-slate-300/60" />
           </div>
         </div>
 
         {/* Title tab - positioned at top overlapping the book */}
         <div className="absolute -top-1 left-2 right-[50px] z-10">
-          <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-[11px] font-bold px-2.5 py-2 rounded-lg shadow-md text-center leading-tight">
+          <div className="bg-[#1e3a5f] text-white text-[11px] font-bold px-2.5 py-2 rounded-lg shadow-md text-center leading-tight">
             {label}
           </div>
         </div>
@@ -62,7 +62,7 @@ function BookCard({ label, href }: { label: string; href: string }) {
 export default function ReportsPage() {
   return (
     <div className="py-6 px-4">
-      <div className="grid grid-cols-4 gap-y-12 gap-x-6 justify-items-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-12 gap-x-6 justify-items-center">
         {reportCards.map((report) => (
           <BookCard key={report.label} label={report.label} href={report.href} />
         ))}

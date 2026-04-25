@@ -72,7 +72,7 @@ export default function AllBillsPage() {
   const totalPaid = filtered.reduce((s, b) => s + b.paidAmount, 0);
   const totalDue = totalBilled - totalPaid;
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none";
+  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none";
 
   const statusBadge = (status: string) => {
     const cls = status === "PAID" ? "bg-green-100 text-green-700" : status === "PARTIAL" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700";
@@ -81,12 +81,12 @@ export default function AllBillsPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Generated Bills</h2>
       </div>
       <div className="p-6">
         {/* Filters */}
-        <div className="grid grid-cols-5 gap-4 mb-6 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-6 items-end">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Member</label>
             <select value={memberId} onChange={(e) => { setMemberId(e.target.value); setPage(1); }} className={inputClass}>
@@ -128,7 +128,7 @@ export default function AllBillsPage() {
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-blue-50 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500">Total Billed</div>
             <div className="text-lg font-bold text-blue-700">{formatCurrency(totalBilled)}</div>
@@ -153,7 +153,7 @@ export default function AllBillsPage() {
           </div>
           <div className="relative">
             <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-            <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search..." className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none" />
+            <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search..." className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none" />
           </div>
         </div>
 
@@ -163,7 +163,7 @@ export default function AllBillsPage() {
           <>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-purple-50">
+                <tr className="bg-slate-50">
                   <th className="text-left px-4 py-2 font-semibold text-gray-700">Bill No.</th>
                   <th className="text-left px-4 py-2 font-semibold text-gray-700">Date</th>
                   <th className="text-left px-4 py-2 font-semibold text-gray-700">Unit</th>
@@ -189,7 +189,7 @@ export default function AllBillsPage() {
                     <td className="px-4 py-2 text-right">{formatCurrency(b.paidAmount)}</td>
                     <td className="px-4 py-2">{statusBadge(b.status)}</td>
                     <td className="px-4 py-2">
-                      <button onClick={() => setSelectedBill(b)} className="text-purple-600 hover:text-purple-800 flex items-center gap-1 text-xs font-medium">
+                      <button onClick={() => setSelectedBill(b)} className="text-teal-600 hover:text-teal-700 flex items-center gap-1 text-xs font-medium">
                         <Eye size={14} /> View
                       </button>
                     </td>
@@ -214,10 +214,10 @@ export default function AllBillsPage() {
       {selectedBill && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setSelectedBill(null)}>
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-purple-200 px-6 py-3 rounded-t-xl flex justify-between items-center">
+            <div className="bg-slate-200 px-6 py-3 rounded-t-xl flex justify-between items-center">
               <h3 className="text-base font-semibold text-gray-800">Bill Details — {selectedBill.billNo}</h3>
               <div className="flex items-center gap-2">
-                <button onClick={() => generateBillPDF(selectedBill as Parameters<typeof generateBillPDF>[0], "Viswa CHS Ltd")} className="text-purple-700 hover:text-purple-900 flex items-center gap-1 text-sm font-medium" title="Download PDF">
+                <button onClick={() => generateBillPDF(selectedBill as Parameters<typeof generateBillPDF>[0], "Viswa CHS Ltd")} className="text-teal-700 hover:text-teal-800 flex items-center gap-1 text-sm font-medium" title="Download PDF">
                   <FileDown size={16} /> PDF
                 </button>
                 <button onClick={() => setSelectedBill(null)} className="text-gray-600 hover:text-gray-900 text-xl">&times;</button>

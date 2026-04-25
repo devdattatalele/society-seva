@@ -45,19 +45,19 @@ export default function ClosingBalancePage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
         <div />
         <h2 className="text-lg font-semibold text-center">Member Closing Balance</h2>
         <div className="flex gap-2">
-          <button onClick={() => window.print()} className="text-white hover:text-purple-200 transition" title="Print"><Printer size={18} /></button>
+          <button onClick={() => window.print()} className="text-white hover:text-slate-300 transition" title="Print"><Printer size={18} /></button>
           <button onClick={() => {
             const rows = balances.map((b, i) => [i + 1, b.unitNo || "-", b.memberName, fmtBal(b.principalBalance), fmtBal(b.interestBalance), fmtBal(b.taxBalance), fmtBal(b.totalBalance)]);
             generateReportPDF("Member Closing Balance", ["#", "Unit No.", "Member Name", "Principal", "Interest", "Tax", "Total Balance"], rows, { subtitle: `As on ${new Date().toLocaleDateString("en-IN")}`, totals: ["", "", "Totals", fmtBal(totalPrincipal), fmtBal(totalInterest), fmtBal(totalTax), fmtBal(totalBalance)] });
-          }} className="text-white hover:text-purple-200 transition" title="Download PDF"><FileDown size={18} /></button>
+          }} className="text-white hover:text-slate-300 transition" title="Download PDF"><FileDown size={18} /></button>
           <button onClick={() => {
             const rows = balances.map((b, i) => [i + 1, b.unitNo || "-", b.memberName, b.principalBalance, b.interestBalance, b.taxBalance, b.totalBalance]);
             exportToExcel("Member Closing Balance", ["#", "Unit No.", "Member Name", "Principal Balance", "Interest Balance", "Tax Balance", "Total Balance"], rows);
-          }} className="text-white hover:text-purple-200 transition" title="Download Excel"><FileSpreadsheet size={18} /></button>
+          }} className="text-white hover:text-slate-300 transition" title="Download Excel"><FileSpreadsheet size={18} /></button>
         </div>
       </div>
       <div className="p-6">
@@ -68,7 +68,7 @@ export default function ClosingBalancePage() {
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-purple-50">
+            <tr className="bg-slate-50">
               <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Unit No.</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Member Name</th>

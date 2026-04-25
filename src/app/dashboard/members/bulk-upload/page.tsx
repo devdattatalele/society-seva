@@ -105,7 +105,7 @@ export default function BulkUploadPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Bulk Member Upload</h2>
       </div>
       <div className="p-6">
@@ -125,7 +125,7 @@ export default function BulkUploadPage() {
           <button onClick={downloadTemplate} className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2 font-medium">
             <Download size={16} /> Download Template
           </button>
-          <button onClick={() => fileRef.current?.click()} className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition flex items-center gap-2 font-medium">
+          <button onClick={() => fileRef.current?.click()} className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition flex items-center gap-2 font-medium">
             <Upload size={16} /> Select CSV File
           </button>
           <input ref={fileRef} type="file" accept=".csv,.txt" onChange={handleFileChange} className="hidden" />
@@ -138,7 +138,7 @@ export default function BulkUploadPage() {
             <div className="overflow-x-auto mb-4 max-h-[300px] overflow-y-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="bg-purple-50">
+                  <tr className="bg-slate-50">
                     <th className="text-left px-3 py-1.5 font-semibold text-gray-700">#</th>
                     {Object.keys(csvData[0]).slice(0, 8).map((k) => (
                       <th key={k} className="text-left px-3 py-1.5 font-semibold text-gray-700">{k}</th>
@@ -168,7 +168,7 @@ export default function BulkUploadPage() {
         {/* Upload results */}
         {result && (
           <div className="mt-6">
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               <div className="bg-blue-50 rounded-lg p-3 text-center">
                 <div className="text-xs text-gray-500">Total</div>
                 <div className="text-xl font-bold text-blue-700">{result.total}</div>

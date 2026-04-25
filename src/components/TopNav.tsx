@@ -11,6 +11,7 @@ import {
   Printer,
   User,
   LogOut,
+  Menu,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -18,9 +19,10 @@ interface TopNavProps {
   userName: string;
   societyName: string;
   financialYear: string;
+  onMenuToggle?: () => void;
 }
 
-export default function TopNav({ userName, societyName, financialYear }: TopNavProps) {
+export default function TopNav({ userName, societyName, financialYear, onMenuToggle }: TopNavProps) {
   const router = useRouter();
   const [showProfile, setShowProfile] = useState(false);
 
@@ -30,33 +32,39 @@ export default function TopNav({ userName, societyName, financialYear }: TopNavP
   }
 
   const navIcons = [
-    { icon: <Building2 size={22} />, href: "/dashboard/building/inside-story", label: "Building" },
-    { icon: <Home size={22} />, href: "/dashboard", label: "Home" },
-    { icon: <FileText size={22} />, href: "/dashboard/members/all-bills", label: "Bills" },
-    { icon: <FileSpreadsheet size={22} />, href: "/dashboard/members/receipt-entry", label: "Receipts", badge: "New" },
-    { icon: <FilePlus size={22} />, href: "/dashboard/members/journal-voucher", label: "Voucher" },
-    { icon: <Printer size={22} />, href: "/dashboard/reports/bill-register", label: "Print" },
+    { icon: <Building2 size={20} />, href: "/dashboard/building/inside-story", label: "Building" },
+    { icon: <Home size={20} />, href: "/dashboard", label: "Home" },
+    { icon: <FileText size={20} />, href: "/dashboard/members/all-bills", label: "Bills" },
+    { icon: <FileSpreadsheet size={20} />, href: "/dashboard/members/receipt-entry", label: "Receipts", badge: "New" },
+    { icon: <FilePlus size={20} />, href: "/dashboard/members/journal-voucher", label: "Voucher" },
+    { icon: <Printer size={20} />, href: "/dashboard/reports/bill-register", label: "Print" },
   ];
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-2 flex items-center justify-between">
-      {/* Left: Logo */}
+    <header className="bg-white shadow-sm border-b border-gray-200 px-3 md:px-4 py-2 flex items-center justify-between gap-2">
+      {/* Left: Hamburger (mobile) + Logo */}
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
+        <button
+          onClick={onMenuToggle}
+          className="md:hidden p-2 -ml-1 text-slate-600 hover:bg-slate-100 rounded-lg transition"
+        >
+          <Menu size={20} />
+        </button>
+        <div className="w-8 h-8 bg-[#1e3a5f] rounded flex items-center justify-center">
           <Building2 size={16} className="text-white" />
         </div>
       </div>
 
-      {/* Center: Nav Icons */}
-      <div className="flex items-center gap-1">
+      {/* Center: Nav Icons (hidden on small mobile) */}
+      <div className="hidden sm:flex items-center gap-1">
         {navIcons.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className="relative p-3 rounded-full hover:bg-purple-50 transition-colors group"
+            className="relative p-2.5 rounded-full hover:bg-slate-50 transition-colors group"
             title={item.label}
           >
-            <span className="text-purple-600 group-hover:text-purple-800">
+            <span className="text-slate-600 group-hover:text-slate-900">
               {item.icon}
             </span>
             {item.badge && (
@@ -69,8 +77,8 @@ export default function TopNav({ userName, societyName, financialYear }: TopNavP
       </div>
 
       {/* Right: User info + FY */}
-      <div className="flex items-center gap-4">
-        <div className="text-right text-xs">
+      <div className="flex items-center gap-2 md:gap-4">
+        <div className="text-right text-xs hidden md:block">
           <div className="flex items-center gap-1 text-gray-600">
             <User size={12} />
             <span>: {userName}</span>
@@ -82,7 +90,7 @@ export default function TopNav({ userName, societyName, financialYear }: TopNavP
         </div>
 
         {/* Financial Year Badge */}
-        <div className="bg-purple-600 text-white rounded-lg px-3 py-1 text-center">
+        <div className="bg-[#1e3a5f] text-white rounded-lg px-2.5 py-1 text-center hidden sm:block">
           <div className="text-[10px] leading-tight">April-March</div>
           <div className="text-sm font-bold leading-tight">{financialYear}</div>
         </div>
@@ -91,9 +99,9 @@ export default function TopNav({ userName, societyName, financialYear }: TopNavP
         <div className="relative">
           <button
             onClick={() => setShowProfile(!showProfile)}
-            className="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center hover:bg-purple-200 transition"
+            className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-slate-200 transition"
           >
-            <User size={18} className="text-purple-600" />
+            <User size={16} className="text-slate-600" />
           </button>
           {showProfile && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">

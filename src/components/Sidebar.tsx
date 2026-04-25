@@ -32,6 +32,7 @@ import {
   Upload,
   BarChart,
   PieChart,
+  X,
 } from "lucide-react";
 
 interface MenuItem {
@@ -97,7 +98,7 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
     "Building Record": false,
@@ -111,20 +112,32 @@ export default function Sidebar() {
 
   const isActive = (href: string) => pathname === href;
 
+  function handleNavClick() {
+    onClose?.();
+  }
+
   return (
-    <aside className="w-[200px] min-h-screen bg-gradient-to-b from-purple-600 to-purple-800 text-white flex flex-col overflow-y-auto flex-shrink-0">
+    <aside className="w-[220px] h-full bg-[#1e3a5f] text-white flex flex-col overflow-y-auto flex-shrink-0">
+      {/* Mobile close button */}
+      <div className="flex items-center justify-between px-4 py-3 md:hidden border-b border-white/10">
+        <span className="font-semibold text-sm">Menu</span>
+        <button onClick={onClose} className="p-1 hover:bg-white/10 rounded">
+          <X size={18} />
+        </button>
+      </div>
+
       <nav className="flex-1 py-2">
         {menuItems.map((item) => (
           <div key={item.label}>
             {item.children ? (
               <button
                 onClick={() => toggleMenu(item.label)}
-                className={`flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium hover:bg-purple-700 transition-colors border-l-4 ${
-                  item.href && isActive(item.href) ? "border-white bg-purple-900" : "border-transparent"
+                className={`flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium hover:bg-white/10 transition-colors border-l-4 ${
+                  item.href && isActive(item.href) ? "border-teal-400 bg-white/15" : "border-transparent"
                 }`}
               >
                 {item.href ? (
-                  <Link href={item.href} className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                  <Link href={item.href} className="flex items-center gap-2" onClick={(e) => { e.stopPropagation(); handleNavClick(); }}>
                     {item.icon}
                     {item.label}
                   </Link>
@@ -143,10 +156,11 @@ export default function Sidebar() {
             ) : item.href ? (
               <Link
                 href={item.href}
+                onClick={handleNavClick}
                 className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? "bg-purple-900 border-l-4 border-white"
-                    : "hover:bg-purple-700 border-l-4 border-transparent"
+                    ? "bg-white/15 border-l-4 border-teal-400"
+                    : "hover:bg-white/10 border-l-4 border-transparent"
                 }`}
               >
                 {item.icon}
@@ -156,15 +170,16 @@ export default function Sidebar() {
 
             {/* Children */}
             {item.children && openMenus[item.label] && (
-              <div className="bg-purple-900/40">
+              <div className="bg-black/15">
                 {item.children.map((child) => (
                   <Link
                     key={child.href}
                     href={child.href}
+                    onClick={handleNavClick}
                     className={`flex items-center gap-2 pl-8 pr-4 py-2 text-xs transition-colors ${
                       isActive(child.href)
-                        ? "bg-purple-900 text-white font-semibold"
-                        : "text-purple-200 hover:text-white hover:bg-purple-800"
+                        ? "bg-white/15 text-white font-semibold"
+                        : "text-slate-300 hover:text-white hover:bg-white/10"
                     }`}
                   >
                     {child.icon}

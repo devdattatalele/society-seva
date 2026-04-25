@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Users,
@@ -13,16 +13,12 @@ import {
   Award,
   CheckCircle2,
   ChevronDown,
-  ChevronUp,
-  Star,
   Menu,
   X,
   ArrowRight,
-  Play,
   Shield,
   Clock,
   Headphones,
-  Zap,
   ClipboardList,
   UserPlus,
   Settings,
@@ -119,21 +115,18 @@ const testimonials = [
     role: "Secretary, Shanti Niketan CHS",
     location: "Andheri West, Mumbai",
     text: "Society Seva has transformed how we manage our 120-flat society. Bill generation that used to take 2 days now happens in 2 minutes. The accounting reports are exactly what our auditor needs.",
-    rating: 5,
   },
   {
     name: "Priya Deshmukh",
     role: "Treasurer, Green Valley Society",
     location: "Kothrud, Pune",
     text: "We switched from Excel sheets to Society Seva and haven't looked back. The interest calculation alone saved us from so many disputes. At ₹999, it's an absolute steal.",
-    rating: 5,
   },
   {
     name: "Sunil Sharma",
     role: "Chairman, Sunrise Apartments",
     location: "Gurgaon, Haryana",
     text: "The bank reconciliation feature is brilliant. We can now match every transaction and present clean books at the AGM. Our members are impressed with the transparency.",
-    rating: 5,
   },
 ];
 
@@ -177,20 +170,85 @@ const pricingIncludes = [
   "Data Backup & Security",
 ];
 
+/* ─────────────── Dashboard Mockup ─────────────── */
+
+function DashboardMockup() {
+  return (
+    <div className="w-full max-w-[520px] mx-auto">
+      {/* Browser chrome */}
+      <div className="bg-slate-700 rounded-t-xl px-4 py-3 flex items-center gap-2">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-400" />
+          <div className="w-3 h-3 rounded-full bg-yellow-400" />
+          <div className="w-3 h-3 rounded-full bg-green-400" />
+        </div>
+        <div className="flex-1 mx-3">
+          <div className="bg-slate-600 rounded-md px-3 py-1 text-xs text-slate-300 text-center">
+            societyseva.app/dashboard
+          </div>
+        </div>
+      </div>
+
+      {/* Dashboard content */}
+      <div className="bg-slate-100 rounded-b-xl flex overflow-hidden" style={{ height: 280 }}>
+        {/* Mini sidebar */}
+        <div className="w-14 bg-[#1e3a5f] flex flex-col items-center py-3 gap-3 flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-white/20 mb-2" />
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className={`w-6 h-6 rounded ${i === 0 ? "bg-teal-400" : "bg-white/15"}`} />
+          ))}
+        </div>
+
+        {/* Main area */}
+        <div className="flex-1 p-3 overflow-hidden">
+          {/* Stat cards */}
+          <div className="grid grid-cols-3 gap-2 mb-3">
+            {[
+              { label: "Members", value: "142", color: "bg-teal-500" },
+              { label: "Collected", value: "₹8.2L", color: "bg-blue-500" },
+              { label: "Pending", value: "₹1.4L", color: "bg-amber-500" },
+            ].map((s) => (
+              <div key={s.label} className="bg-white rounded-lg p-2 shadow-sm">
+                <div className={`w-6 h-1.5 rounded-full ${s.color} mb-1.5`} />
+                <div className="text-[11px] font-bold text-slate-800">{s.value}</div>
+                <div className="text-[9px] text-slate-400">{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bar chart */}
+          <div className="bg-white rounded-lg p-2 shadow-sm mb-3">
+            <div className="text-[9px] font-semibold text-slate-500 mb-2">Monthly Collection</div>
+            <div className="flex items-end gap-1.5 h-16">
+              {[65, 80, 55, 90, 70, 85, 95, 60, 75, 88, 72, 92].map((h, i) => (
+                <div key={i} className="flex-1 bg-teal-400 rounded-t" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Mini table */}
+          <div className="bg-white rounded-lg p-2 shadow-sm">
+            <div className="text-[9px] font-semibold text-slate-500 mb-1.5">Recent Bills</div>
+            {[1, 2, 3].map((r) => (
+              <div key={r} className="flex items-center gap-2 py-1 border-b border-slate-50 last:border-0">
+                <div className="w-12 h-1.5 bg-slate-200 rounded-full" />
+                <div className="flex-1 h-1.5 bg-slate-100 rounded-full" />
+                <div className="w-8 h-1.5 bg-teal-200 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─────────────── component ─────────────── */
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  /* smooth anchor helper */
   function scrollTo(id: string) {
     setMobileMenuOpen(false);
     const el = document.getElementById(id);
@@ -198,97 +256,77 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
+    <div className="min-h-screen bg-white text-slate-800 overflow-x-hidden">
       {/* ──────── NAVBAR ──────── */}
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* logo */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-2 group"
+              className="flex items-center gap-2"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:shadow-purple-500/40 transition">
-                <Building2 className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-[#1e3a5f] flex items-center justify-center">
+                <Building2 className="w-4.5 h-4.5 text-white" />
               </div>
-              <span
-                className={`text-xl font-bold tracking-tight transition-colors ${
-                  scrolled ? "text-gray-900" : "text-white"
-                }`}
-              >
+              <span className="text-lg font-bold text-slate-900 tracking-tight">
                 Society Seva
               </span>
             </button>
 
-            {/* desktop links */}
             <div className="hidden md:flex items-center gap-8">
               {["features", "pricing", "testimonials", "contact"].map((s) => (
                 <button
                   key={s}
                   onClick={() => scrollTo(s)}
-                  className={`text-sm font-medium capitalize transition-colors hover:text-purple-500 ${
-                    scrolled ? "text-gray-600" : "text-white/80 hover:text-white"
-                  }`}
+                  className="text-sm font-medium capitalize text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   {s}
                 </button>
               ))}
               <Link
                 href="/login"
-                className={`text-sm font-medium transition-colors hover:text-purple-500 ${
-                  scrolled ? "text-gray-600" : "text-white/80 hover:text-white"
-                }`}
+                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
               >
                 Login
               </Link>
               <Link
                 href="/login"
-                className="bg-white text-purple-700 px-5 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl hover:bg-purple-50 transition-all"
+                className="bg-teal-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors"
               >
                 Free Demo
               </Link>
             </div>
 
-            {/* mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`md:hidden p-2 rounded-lg transition ${
-                scrolled ? "text-gray-700" : "text-white"
-              }`}
+              className="md:hidden p-2 text-slate-700"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-t shadow-xl animate-in">
-            <div className="px-4 py-4 space-y-2">
+          <div className="md:hidden bg-white border-t border-slate-100">
+            <div className="px-5 py-4 space-y-1">
               {["features", "pricing", "testimonials", "contact"].map((s) => (
                 <button
                   key={s}
                   onClick={() => scrollTo(s)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium capitalize hover:bg-purple-50 transition"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-slate-700 font-medium capitalize hover:bg-slate-50 transition"
                 >
                   {s}
                 </button>
               ))}
               <Link
                 href="/login"
-                className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-purple-50 transition"
+                className="block px-4 py-3 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition"
               >
                 Login
               </Link>
               <Link
                 href="/login"
-                className="block text-center mt-2 bg-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
+                className="block text-center mt-2 bg-teal-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-teal-700 transition"
               >
                 Free Demo
               </Link>
@@ -298,68 +336,55 @@ export default function LandingPage() {
       </nav>
 
       {/* ──────── HERO ──────── */}
-      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 overflow-hidden">
-        {/* decorative blobs */}
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
-        <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-pink-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <section className="pt-16 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 md:py-24">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left — text */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-teal-900/30 border border-teal-700/40 rounded-full px-4 py-1.5 mb-6 text-sm text-teal-300">
+                <CheckCircle2 className="w-4 h-4" />
+                One-time purchase &mdash; No subscription fees
+              </div>
 
-        {/* subtle grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+                Complete Society Management & Accounting Software
+              </h1>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-8 text-sm text-purple-100">
-            <Zap className="w-4 h-4 text-yellow-300" />
-            <span>One-time purchase &mdash; No subscription fees</span>
-          </div>
+              <p className="mt-5 text-base lg:text-lg text-slate-300 leading-relaxed max-w-lg">
+                Manage members, generate bills, track payments, reconcile bank
+                accounts, and get 20+ financial reports &mdash; all for a one-time
+                price of <span className="font-semibold text-white">just ₹999</span>.
+              </p>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
-            Complete Society
-            <br />
-            <span className="bg-gradient-to-r from-purple-200 via-pink-200 to-indigo-200 bg-clip-text text-transparent">
-              Management & Accounting
-            </span>
-            <br />
-            Software
-          </h1>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/login"
+                  className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white px-7 py-3 rounded-lg text-base font-semibold hover:bg-teal-700 transition-colors"
+                >
+                  Start Free Demo
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <button
+                  onClick={() => scrollTo("features")}
+                  className="inline-flex items-center justify-center gap-2 border border-slate-600 text-slate-300 px-7 py-3 rounded-lg text-base font-medium hover:bg-slate-800 transition-colors"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
 
-          <p className="mt-6 md:mt-8 text-lg md:text-xl text-purple-100/90 max-w-2xl mx-auto leading-relaxed">
-            Manage members, generate bills, track payments, reconcile bank
-            accounts, and get 20+ financial reports &mdash; all for a one-time
-            price of{" "}
-            <span className="font-bold text-white">just ₹999</span>.
-          </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/login"
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-purple-700 px-8 py-4 rounded-full text-lg font-bold shadow-2xl shadow-purple-900/30 hover:shadow-purple-900/50 hover:bg-purple-50 transition-all"
-            >
-              Start Free Demo
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <button
-              onClick={() => scrollTo("features")}
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/25 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all"
-            >
-              <Play className="w-5 h-5" />
-              Watch Video
-            </button>
+            {/* Right — dashboard mockup */}
+            <div className="hidden md:block">
+              <DashboardMockup />
+            </div>
           </div>
         </div>
       </section>
 
       {/* ──────── STATS BAR ──────── */}
-      <section className="relative -mt-12 z-10">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="bg-white rounded-2xl shadow-2xl shadow-purple-500/10 border border-purple-100/50 grid grid-cols-2 md:grid-cols-4 divide-x divide-purple-100">
+      <section className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
             {[
               { value: "500+", label: "Societies" },
               { value: "50,000+", label: "Members Managed" },
@@ -367,10 +392,10 @@ export default function LandingPage() {
               { value: "99.9%", label: "Uptime" },
             ].map((s) => (
               <div key={s.label} className="py-6 md:py-8 text-center px-2">
-                <div className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <div className="text-2xl md:text-3xl font-bold text-teal-700">
                   {s.value}
                 </div>
-                <div className="text-xs md:text-sm text-gray-500 mt-1 font-medium">
+                <div className="text-xs md:text-sm text-slate-500 mt-1 font-medium">
                   {s.label}
                 </div>
               </div>
@@ -380,34 +405,34 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── FEATURES ──────── */}
-      <section id="features" className="py-20 md:py-28 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="inline-block text-sm font-semibold text-purple-600 bg-purple-50 px-4 py-1.5 rounded-full mb-4">
+      <section id="features" className="py-16 md:py-24 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-2">
               Features
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Everything Your Society Needs
             </h2>
-            <p className="mt-4 text-lg text-gray-500">
+            <p className="mt-3 text-base text-slate-500">
               From member management to financial reporting &mdash; a complete
               solution built for cooperative housing societies.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f) => (
               <div
                 key={f.title}
-                className="group relative bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-200 transition-all duration-300"
+                className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4 group-hover:bg-purple-600 transition-colors duration-300">
-                  <f.icon className="w-6 h-6 text-purple-600 group-hover:text-white transition-colors duration-300" />
+                <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center mb-4">
+                  <f.icon className="w-5 h-5 text-teal-600" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-base font-semibold text-slate-900 mb-2">
                   {f.title}
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   {f.desc}
                 </p>
               </div>
@@ -417,38 +442,37 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── HOW IT WORKS ──────── */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-purple-50/50 to-white scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="inline-block text-sm font-semibold text-purple-600 bg-purple-50 px-4 py-1.5 rounded-full mb-4">
+      <section className="py-16 md:py-24 bg-slate-50 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-2">
               How It Works
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Get Started in 3 Simple Steps
             </h2>
-            <p className="mt-4 text-lg text-gray-500">
+            <p className="mt-3 text-base text-slate-500">
               Go from sign-up to fully operational in under an hour &mdash; no
               technical skills required.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid md:grid-cols-3 gap-8">
             {steps.map((s, i) => (
               <div key={s.step} className="relative text-center">
-                {/* connector line */}
                 {i < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-12 left-[60%] w-[80%] border-t-2 border-dashed border-purple-200" />
+                  <div className="hidden md:block absolute top-8 left-[60%] w-[80%] border-t-2 border-dashed border-slate-300" />
                 )}
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-purple-500/25 mb-6">
-                  <s.icon className="w-10 h-10 text-white" />
+                <div className="w-16 h-16 rounded-full bg-teal-600 flex items-center justify-center mx-auto mb-5">
+                  <s.icon className="w-7 h-7 text-white" />
                 </div>
-                <span className="inline-block text-xs font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full mb-3">
+                <span className="inline-block text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full mb-3">
                   STEP {s.step}
                 </span>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">
                   {s.title}
                 </h3>
-                <p className="text-gray-500 leading-relaxed max-w-xs mx-auto">
+                <p className="text-slate-500 leading-relaxed max-w-xs mx-auto text-sm">
                   {s.desc}
                 </p>
               </div>
@@ -458,42 +482,38 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── REPORTS SHOWCASE ──────── */}
-      <section className="py-20 md:py-28 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 rounded-3xl p-8 md:p-16 relative overflow-hidden">
-            {/* decorative */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3" />
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-indigo-400/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4" />
-
-            <div className="relative grid md:grid-cols-2 gap-12 items-center">
+      <section className="py-16 md:py-24 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="bg-slate-900 rounded-2xl p-8 md:p-14">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
               <div>
-                <span className="inline-block text-sm font-semibold text-purple-200 bg-white/10 px-4 py-1.5 rounded-full mb-4">
+                <p className="text-sm font-semibold text-teal-400 uppercase tracking-wide mb-2">
                   Reports
-                </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
+                </p>
+                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-4">
                   20+ Ready-Made Financial Reports
                 </h2>
-                <p className="text-purple-100/80 text-lg leading-relaxed mb-6">
+                <p className="text-slate-300 text-base leading-relaxed mb-6">
                   Generate audit-ready reports with a single click. No more
                   manual calculations or Excel formulas &mdash; everything is
                   automated and accurate.
                 </p>
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-2 bg-white text-purple-700 px-6 py-3 rounded-full font-bold hover:bg-purple-50 transition shadow-lg"
+                  className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-teal-700 transition text-sm"
                 >
                   Explore Reports
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {reports.map((r) => (
                   <div
                     key={r}
-                    className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-sm text-white hover:bg-white/20 transition"
+                    className="flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200"
                   >
-                    <ClipboardList className="w-4 h-4 text-purple-300 flex-shrink-0" />
+                    <ClipboardList className="w-4 h-4 text-teal-400 flex-shrink-0" />
                     {r}
                   </div>
                 ))}
@@ -504,79 +524,75 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── PRICING ──────── */}
-      <section
-        id="pricing"
-        className="py-20 md:py-28 bg-gradient-to-b from-white to-purple-50/50 scroll-mt-20"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="inline-block text-sm font-semibold text-purple-600 bg-purple-50 px-4 py-1.5 rounded-full mb-4">
+      <section id="pricing" className="py-16 md:py-24 bg-slate-50 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-2">
               Pricing
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Simple, Transparent Pricing
             </h2>
-            <p className="mt-4 text-lg text-gray-500">
+            <p className="mt-3 text-base text-slate-500">
               No monthly fees. No hidden charges. One payment, lifetime access.
             </p>
           </div>
 
-          <div className="max-w-lg mx-auto">
-            <div className="relative bg-white border-2 border-purple-200 rounded-3xl p-8 md:p-10 shadow-2xl shadow-purple-500/10">
-              {/* badge */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold px-6 py-1.5 rounded-full shadow-lg">
-                  BEST VALUE
-                </span>
-              </div>
+          <div className="max-w-md mx-auto">
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+              {/* Teal top accent */}
+              <div className="h-1.5 bg-teal-600" />
 
-              <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-1">
-                  Complete Suite
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Everything you need to run your society
-                </p>
-                <div className="mt-6 flex items-baseline justify-center gap-1">
-                  <span className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                    ₹999
+              <div className="p-7 md:p-9">
+                <div className="text-center mb-7">
+                  <span className="inline-block text-xs font-bold text-teal-700 bg-teal-50 px-4 py-1 rounded-full mb-4 uppercase tracking-wide">
+                    Best Value
                   </span>
-                  <span className="text-gray-400 font-medium">/one-time</span>
-                </div>
-                <p className="text-sm text-green-600 font-medium mt-2 flex items-center justify-center gap-1">
-                  <CheckCircle2 className="w-4 h-4" />
-                  Lifetime access &mdash; no recurring fees
-                </p>
-              </div>
-
-              <div className="space-y-3 mb-8">
-                {pricingIncludes.map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-purple-600" />
-                    </div>
-                    <span className="text-gray-700">{item}</span>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-1">
+                    Complete Suite
+                  </h3>
+                  <p className="text-slate-500 text-sm">
+                    Everything you need to run your society
+                  </p>
+                  <div className="mt-5 flex items-baseline justify-center gap-1">
+                    <span className="text-5xl font-bold text-slate-900">
+                      ₹999
+                    </span>
+                    <span className="text-slate-400 font-medium">/one-time</span>
                   </div>
-                ))}
-              </div>
+                  <p className="text-sm text-teal-600 font-medium mt-2 flex items-center justify-center gap-1">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Lifetime access &mdash; no recurring fees
+                  </p>
+                </div>
 
-              <Link
-                href="/login"
-                className="block w-full text-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
-              >
-                Buy Now &mdash; ₹999
-              </Link>
+                <div className="space-y-3 mb-7">
+                  {pricingIncludes.map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-teal-600 flex-shrink-0" />
+                      <span className="text-sm text-slate-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
 
-              <div className="mt-6 flex items-center justify-center gap-6 text-xs text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Shield className="w-3.5 h-3.5" /> Secure Payment
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" /> Instant Access
-                </span>
-                <span className="flex items-center gap-1">
-                  <Headphones className="w-3.5 h-3.5" /> Free Support
-                </span>
+                <Link
+                  href="/login"
+                  className="block w-full text-center bg-teal-600 text-white py-3.5 rounded-lg font-semibold text-base hover:bg-teal-700 transition-colors"
+                >
+                  Buy Now &mdash; ₹999
+                </Link>
+
+                <div className="mt-5 flex items-center justify-center gap-5 text-xs text-slate-400">
+                  <span className="flex items-center gap-1">
+                    <Shield className="w-3.5 h-3.5" /> Secure Payment
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" /> Instant Access
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Headphones className="w-3.5 h-3.5" /> Free Support
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -584,48 +600,41 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── TESTIMONIALS ──────── */}
-      <section id="testimonials" className="py-20 md:py-28 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="inline-block text-sm font-semibold text-purple-600 bg-purple-50 px-4 py-1.5 rounded-full mb-4">
+      <section id="testimonials" className="py-16 md:py-24 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-2">
               Testimonials
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Trusted by Society Committees
             </h2>
-            <p className="mt-4 text-lg text-gray-500">
+            <p className="mt-3 text-base text-slate-500">
               Hear from secretaries and treasurers who manage their societies
               with Society Seva.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t) => (
               <div
                 key={t.name}
-                className="bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-200 transition-all duration-300"
+                className="bg-white border border-slate-200 rounded-xl p-7"
               >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-5 h-5 text-yellow-400 fill-yellow-400"
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-600 leading-relaxed mb-6">
-                  &ldquo;{t.text}&rdquo;
+                <div className="text-4xl text-slate-200 font-serif leading-none mb-3">&ldquo;</div>
+                <p className="text-slate-600 leading-relaxed mb-6 text-sm">
+                  {t.text}
                 </p>
-                <div className="border-t border-gray-100 pt-4">
+                <div className="border-t border-slate-100 pt-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+                    <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-semibold text-sm">
                       {t.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900 text-sm">
+                      <div className="font-semibold text-slate-900 text-sm">
                         {t.name}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-slate-500">
                         {t.role} &middot; {t.location}
                       </div>
                     </div>
@@ -638,41 +647,39 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── FAQ ──────── */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-purple-50/40 to-white scroll-mt-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="inline-block text-sm font-semibold text-purple-600 bg-purple-50 px-4 py-1.5 rounded-full mb-4">
+      <section className="py-16 md:py-24 bg-slate-50 scroll-mt-16">
+        <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-2">
               FAQ
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Frequently Asked Questions
             </h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-purple-200 transition-colors"
+                className="bg-white border border-slate-200 rounded-xl overflow-hidden"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between px-6 py-5 text-left"
+                  className="w-full flex items-center justify-between px-6 py-4 text-left"
                 >
-                  <span className="font-semibold text-gray-900 pr-4">
+                  <span className="font-medium text-slate-900 pr-4 text-sm">
                     {faq.q}
                   </span>
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
-                    {openFaq === i ? (
-                      <ChevronUp className="w-4 h-4 text-purple-600" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4 text-purple-600" />
-                    )}
-                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-200 ${
+                      openFaq === i ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-5 -mt-1">
-                    <p className="text-gray-500 leading-relaxed">{faq.a}</p>
+                  <div className="px-6 pb-4 -mt-1">
+                    <p className="text-sm text-slate-500 leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>
@@ -682,72 +689,58 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── CTA BANNER ──────── */}
-      <section className="py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-60 h-60 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-80 h-80 bg-indigo-400/10 rounded-full blur-2xl translate-x-1/3 translate-y-1/3" />
-            <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
-                Ready to Simplify Your Society Management?
-              </h2>
-              <p className="text-purple-100 text-lg max-w-xl mx-auto mb-8">
-                Join 500+ societies that trust Society Seva for hassle-free
-                billing, accounting, and member management.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  href="/login"
-                  className="group inline-flex items-center gap-2 bg-white text-purple-700 px-8 py-4 rounded-full text-lg font-bold shadow-2xl hover:bg-purple-50 transition-all"
-                >
-                  Get Started Now
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <button
-                  onClick={() => scrollTo("pricing")}
-                  className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all"
-                >
-                  View Pricing
-                </button>
-              </div>
+      <section className="py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="bg-[#1e3a5f] rounded-2xl p-10 md:p-14 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-4">
+              Ready to Simplify Your Society Management?
+            </h2>
+            <p className="text-slate-300 text-base max-w-xl mx-auto mb-8">
+              Join 500+ societies that trust Society Seva for hassle-free
+              billing, accounting, and member management.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 bg-teal-600 text-white px-7 py-3 rounded-lg text-base font-semibold hover:bg-teal-700 transition-colors"
+              >
+                Get Started Now
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button
+                onClick={() => scrollTo("pricing")}
+                className="inline-flex items-center gap-2 border border-slate-400 text-white px-7 py-3 rounded-lg text-base font-medium hover:bg-white/10 transition-colors"
+              >
+                View Pricing
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* ──────── FOOTER ──────── */}
-      <footer id="contact" className="bg-gray-900 text-gray-400 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid md:grid-cols-4 gap-10">
+      <footer id="contact" className="bg-slate-900 text-slate-400 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
             {/* brand */}
-            <div className="md:col-span-1">
+            <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+                  <Building2 className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xl font-bold text-white">
+                <span className="text-lg font-bold text-white">
                   Society Seva
                 </span>
               </div>
-              <p className="text-sm leading-relaxed mb-6">
+              <p className="text-sm leading-relaxed">
                 India&apos;s most affordable society management and accounting
                 software. Built for cooperative housing societies.
               </p>
-              <div className="flex gap-3">
-                {["Tw", "Fb", "In"].map((s) => (
-                  <span
-                    key={s}
-                    className="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-400 hover:bg-purple-600 hover:text-white transition cursor-pointer"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
             </div>
 
             {/* links */}
             <div>
-              <h4 className="text-white font-semibold mb-4">Product</h4>
+              <h4 className="text-white font-semibold mb-4 text-sm">Product</h4>
               <ul className="space-y-2 text-sm">
                 {["Features", "Pricing", "Reports", "Demo"].map((l) => (
                   <li key={l}>
@@ -755,7 +748,7 @@ export default function LandingPage() {
                       onClick={() =>
                         scrollTo(l.toLowerCase() === "demo" ? "features" : l.toLowerCase())
                       }
-                      className="hover:text-purple-400 transition"
+                      className="hover:text-teal-400 transition"
                     >
                       {l}
                     </button>
@@ -765,12 +758,12 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h4 className="text-white font-semibold mb-4">Company</h4>
+              <h4 className="text-white font-semibold mb-4 text-sm">Company</h4>
               <ul className="space-y-2 text-sm">
-                {["About Us", "Blog", "Careers", "Privacy Policy", "Terms of Service"].map(
+                {["About Us", "Blog", "Privacy Policy", "Terms of Service"].map(
                   (l) => (
                     <li key={l}>
-                      <button className="hover:text-purple-400 transition">
+                      <button className="hover:text-teal-400 transition">
                         {l}
                       </button>
                     </li>
@@ -781,29 +774,28 @@ export default function LandingPage() {
 
             {/* contact */}
             <div>
-              <h4 className="text-white font-semibold mb-4">Contact</h4>
+              <h4 className="text-white font-semibold mb-4 text-sm">Contact</h4>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
-                  <Phone className="w-4 h-4 mt-0.5 text-purple-400 flex-shrink-0" />
+                  <Phone className="w-4 h-4 mt-0.5 text-teal-400 flex-shrink-0" />
                   <span>+91 98765 43210</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Mail className="w-4 h-4 mt-0.5 text-purple-400 flex-shrink-0" />
+                  <Mail className="w-4 h-4 mt-0.5 text-teal-400 flex-shrink-0" />
                   <span>support@societyseva.com</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-0.5 text-purple-400 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 mt-0.5 text-teal-400 flex-shrink-0" />
                   <span>Mumbai, Maharashtra, India</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-sm">
+          <div className="border-t border-slate-800 mt-10 pt-7 flex flex-col md:flex-row items-center justify-between text-sm">
             <p>&copy; 2026 Society Seva. All Rights Reserved.</p>
             <p className="mt-2 md:mt-0">
-              Made with{" "}
-              <span className="text-purple-400">&#9829;</span> for Indian
+              Made with <span className="text-teal-400">&#9829;</span> for Indian
               Housing Societies
             </p>
           </div>

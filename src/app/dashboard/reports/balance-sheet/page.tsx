@@ -30,23 +30,23 @@ export default function BalanceSheetPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
         <div />
         <h2 className="text-lg font-semibold text-center">Balance Sheet</h2>
         <div className="flex gap-2">
-          <button onClick={() => window.print()} className="text-white hover:text-purple-200" title="Print"><Printer size={18} /></button>
+          <button onClick={() => window.print()} className="text-white hover:text-slate-300" title="Print"><Printer size={18} /></button>
           <button onClick={() => {
             const liabRows = (data?.liabilities || []).map(i => ["LIABILITY", i.name, formatCurrency(i.amount)]);
             const assetRows = (data?.assets || []).map(i => ["ASSET", i.name, formatCurrency(i.amount)]);
             const rows = [...liabRows, ...assetRows];
             generateReportPDF("Balance Sheet", ["Type", "Particular", "Amount"], rows, { subtitle: `As on ${data?.asOnDate ? formatDate(data.asOnDate) : new Date().toLocaleDateString("en-IN")}`, totals: ["", "Total Assets / Liabilities", `${formatCurrency(data?.totalAssets || 0)} / ${formatCurrency(data?.totalLiabilities || 0)}`] });
-          }} className="text-white hover:text-purple-200" title="Download PDF"><FileDown size={18} /></button>
+          }} className="text-white hover:text-slate-300" title="Download PDF"><FileDown size={18} /></button>
           <button onClick={() => {
             const liabRows = (data?.liabilities || []).map(i => ["LIABILITY", i.name, i.amount]);
             const assetRows = (data?.assets || []).map(i => ["ASSET", i.name, i.amount]);
             const rows = [...liabRows, ...assetRows];
             exportToExcel("Balance Sheet", ["Type", "Particular", "Amount"], rows);
-          }} className="text-white hover:text-purple-200" title="Download Excel"><FileSpreadsheet size={18} /></button>
+          }} className="text-white hover:text-slate-300" title="Download Excel"><FileSpreadsheet size={18} /></button>
         </div>
       </div>
       <div className="p-6">

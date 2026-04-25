@@ -39,29 +39,29 @@ export default function CashRegisterPage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Cash Register</h2>
       </div>
       <div className="p-6">
         <div className="flex flex-wrap gap-4 mb-4 items-end justify-center">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
-            <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none" />
+            <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
-            <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none" />
+            <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-            <select value={type} onChange={(e) => setType(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
+            <select value={type} onChange={(e) => setType(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none">
               <option value="">All</option>
               <option value="receipt">Receipt</option>
               <option value="payment">Payment</option>
               <option value="opening">Opening</option>
             </select>
           </div>
-          <button onClick={fetchData} className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition flex items-center gap-2">
+          <button onClick={fetchData} className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition flex items-center gap-2">
             <Search size={16} /> Search
           </button>
           <button onClick={() => window.print()} className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2">
@@ -93,7 +93,7 @@ export default function CashRegisterPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-purple-50">
+              <tr className="bg-slate-50">
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Date</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Type</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Vou. No.</th>

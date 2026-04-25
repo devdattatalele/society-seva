@@ -53,13 +53,13 @@ export default function MemberTransferPage() {
     finally { setSaving(false); setTimeout(() => setMsg(""), 4000); }
   }
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none";
+  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none";
 
   if (loading) return <div className="p-8 text-center text-gray-400">Loading...</div>;
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Member Transfer</h2>
       </div>
       <div className="p-6">
@@ -104,7 +104,7 @@ export default function MemberTransferPage() {
         </div>
 
         <div className="flex justify-center mb-6">
-          <button onClick={handleSubmit} disabled={saving} className="bg-purple-600 text-white px-8 py-2.5 rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50">
+          <button onClick={handleSubmit} disabled={saving} className="bg-teal-600 text-white px-8 py-2.5 rounded-lg hover:bg-teal-700 transition font-medium disabled:opacity-50">
             {saving ? "Processing..." : "Transfer Unit"}
           </button>
         </div>
@@ -114,7 +114,7 @@ export default function MemberTransferPage() {
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Transfer History</h3>
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-purple-50">
+              <tr className="bg-slate-50">
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">Date</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">From</th>
                 <th className="text-left px-4 py-2 font-semibold text-gray-700">To</th>

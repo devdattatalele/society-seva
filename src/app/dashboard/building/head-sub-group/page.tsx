@@ -64,17 +64,17 @@ export default function HeadSubGroupPage() {
     fetchData();
   }
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none";
+  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none";
 
   if (loading) return <div className="p-8 text-center text-gray-400">Loading...</div>;
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Head Sub Group</h2>
       </div>
       <div className="p-6">
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Sub Group Name *</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={inputClass} placeholder="e.g. Water Charges" />
@@ -91,7 +91,7 @@ export default function HeadSubGroupPage() {
             </select>
           </div>
           <div className="flex items-end">
-            <button onClick={handleAdd} className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition flex items-center gap-2">
+            <button onClick={handleAdd} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition flex items-center gap-2">
               <Plus size={16} /> Add
             </button>
           </div>
@@ -99,7 +99,7 @@ export default function HeadSubGroupPage() {
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-purple-50">
+            <tr className="bg-slate-50">
               <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Sub Group Name</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Code</th>

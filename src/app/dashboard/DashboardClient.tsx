@@ -27,13 +27,13 @@ interface DashboardData {
 }
 
 const topReports = [
-  { label: "Bank Register", href: "/dashboard/reports/bank-register", color: "bg-purple-600", icon: <Landmark size={20} /> },
+  { label: "Bank Register", href: "/dashboard/reports/bank-register", color: "bg-[#1e3a5f]", icon: <Landmark size={20} /> },
   { label: "Cash Register", href: "/dashboard/reports/cash-register", color: "bg-red-500", icon: <CreditCard size={20} /> },
   { label: "Dues Register", href: "/dashboard/reports/dues-register", color: "bg-yellow-500", icon: <ClipboardList size={20} /> },
   { label: "General Ledger", href: "/dashboard/reports/general-ledger", color: "bg-green-500", icon: <BookOpenCheck size={20} /> },
   { label: "Member Ledger", href: "/dashboard/reports/member-ledger", color: "bg-teal-500", icon: <Users size={20} /> },
   { label: "Bill Register", href: "/dashboard/reports/bill-register", color: "bg-pink-500", icon: <FileBarChart size={20} /> },
-  { label: "Closing Balance", href: "/dashboard/reports/closing-balance", color: "bg-purple-400", icon: <BarChart3 size={20} /> },
+  { label: "Closing Balance", href: "/dashboard/reports/closing-balance", color: "bg-slate-600", icon: <BarChart3 size={20} /> },
   { label: "All Bills", href: "/dashboard/members/all-bills", color: "bg-teal-400", icon: <BarChart3 size={20} /> },
 ];
 
@@ -54,7 +54,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
   if (loading) return <div className="p-8 text-center text-gray-400">Loading dashboard...</div>;
 
   const pieData = [
-    { name: "Residential", value: data?.residentialPct || 0, color: "#a78bfa" },
+    { name: "Residential", value: data?.residentialPct || 0, color: "#1e3a5f" },
     { name: "Commercial", value: data?.commercialPct || 0, color: "#34d399" },
   ].filter(d => d.value > 0);
 
@@ -66,9 +66,9 @@ export default function DashboardClient({ societyName }: { societyName: string }
   return (
     <div className="space-y-4">
       {/* Top Row: Pie + Collection Cards + Trial Balance */}
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Pie Chart */}
-        <div className="col-span-3 bg-white rounded-xl shadow-sm p-4">
+        <div className="col-span-1 md:col-span-3 bg-white rounded-xl shadow-sm p-4">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Unit Type Distribution</h3>
           <div className="flex justify-center">
             <PieChart width={200} height={200}>
@@ -82,7 +82,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
           </div>
           <div className="mt-2 space-y-1">
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <div className="w-3 h-3 rounded-sm bg-purple-400" />
+              <div className="w-3 h-3 rounded-sm bg-[#1e3a5f]" />
               {data?.residentialPct || 0}% Residential
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -97,7 +97,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
         </div>
 
         {/* Collection Cards */}
-        <div className="col-span-3 space-y-4">
+        <div className="col-span-1 md:col-span-3 space-y-4">
           <div className="bg-white rounded-xl shadow-sm p-4">
             <h3 className="text-xs font-semibold text-gray-500 text-center uppercase tracking-wide">Cash Collection</h3>
             <p className="text-3xl font-bold text-teal-500 text-center my-2">{formatCurrency(data?.cashCollection || 0)}</p>
@@ -106,7 +106,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
                 <span className="block text-gray-400">Previous</span>
                 <span className="font-semibold text-gray-700">{formatCurrency(data?.previousCash || 0)}</span>
               </div>
-              <div className="flex items-center gap-1 text-purple-500">
+              <div className="flex items-center gap-1 text-teal-500">
                 <span>Trend</span>
                 <TrendingUp size={14} />
               </div>
@@ -120,7 +120,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
                 <span className="block text-gray-400">Previous</span>
                 <span className="font-semibold text-gray-700">{formatCurrency(data?.previousBank || 0)}</span>
               </div>
-              <div className="flex items-center gap-1 text-purple-500">
+              <div className="flex items-center gap-1 text-teal-500">
                 <span>Trend</span>
                 <TrendingUp size={14} />
               </div>
@@ -129,7 +129,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
         </div>
 
         {/* Trial Balance Chart */}
-        <div className="col-span-6 bg-white rounded-xl shadow-sm p-4">
+        <div className="col-span-1 md:col-span-6 bg-white rounded-xl shadow-sm p-4">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-sm font-semibold text-gray-700">Monthly Income vs Expense</h3>
           </div>
@@ -163,8 +163,8 @@ export default function DashboardClient({ societyName }: { societyName: string }
       </div>
 
       {/* Bottom Row: Due Members + Top Reports */}
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-6 bg-white rounded-xl shadow-sm p-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="col-span-1 md:col-span-6 bg-white rounded-xl shadow-sm p-4">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Due Members</h3>
           {(!data?.dueMembers || data.dueMembers.length === 0) ? (
             <div className="text-center text-gray-400 text-sm py-8">
@@ -196,7 +196,7 @@ export default function DashboardClient({ societyName }: { societyName: string }
           )}
         </div>
 
-        <div className="col-span-6 bg-white rounded-xl shadow-sm p-4">
+        <div className="col-span-1 md:col-span-6 bg-white rounded-xl shadow-sm p-4">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Top Reports</h3>
           <div className="grid grid-cols-3 gap-3">
             {topReports.map((report) => (

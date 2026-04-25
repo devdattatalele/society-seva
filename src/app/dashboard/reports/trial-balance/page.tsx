@@ -37,19 +37,19 @@ export default function TrialBalancePage() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl flex justify-between items-center">
         <div />
         <h2 className="text-lg font-semibold text-center">Trial Balance</h2>
         <div className="flex gap-2">
-          <button onClick={() => window.print()} className="text-white hover:text-purple-200" title="Print"><Printer size={18} /></button>
+          <button onClick={() => window.print()} className="text-white hover:text-slate-300" title="Print"><Printer size={18} /></button>
           <button onClick={() => {
             const rows = entries.map((e, i) => [i + 1, e.name, e.type, formatCurrency(e.openingBalance), e.totalDebit > 0 ? formatCurrency(e.totalDebit) : "-", e.totalCredit > 0 ? formatCurrency(e.totalCredit) : "-", `${formatCurrency(Math.abs(e.closingBalance))} ${e.closingBalance >= 0 ? "Dr" : "Cr"}`]);
             generateReportPDF("Trial Balance", ["#", "Ledger Head", "Type", "Opening", "Debit", "Credit", "Closing"], rows, { subtitle: `As on ${new Date().toLocaleDateString("en-IN")}`, totals: ["", "", "", "", formatCurrency(data?.grandTotalDebit || 0), formatCurrency(data?.grandTotalCredit || 0), ""] });
-          }} className="text-white hover:text-purple-200" title="Download PDF"><FileDown size={18} /></button>
+          }} className="text-white hover:text-slate-300" title="Download PDF"><FileDown size={18} /></button>
           <button onClick={() => {
             const rows = entries.map((e, i) => [i + 1, e.name, e.type, e.openingBalance, e.totalDebit, e.totalCredit, e.closingBalance]);
             exportToExcel("Trial Balance", ["#", "Ledger Head", "Type", "Opening Balance", "Total Debit", "Total Credit", "Closing Balance"], rows);
-          }} className="text-white hover:text-purple-200" title="Download Excel"><FileSpreadsheet size={18} /></button>
+          }} className="text-white hover:text-slate-300" title="Download Excel"><FileSpreadsheet size={18} /></button>
         </div>
       </div>
       <div className="p-6">
@@ -60,7 +60,7 @@ export default function TrialBalancePage() {
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-purple-50">
+            <tr className="bg-slate-50">
               <th className="text-left px-4 py-2 font-semibold text-gray-700">#</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Ledger Head</th>
               <th className="text-left px-4 py-2 font-semibold text-gray-700">Type</th>

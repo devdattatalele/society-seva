@@ -69,11 +69,11 @@ export default function InsideStoryPage() {
 
   if (loading) return <div className="p-8 text-center text-gray-400">Loading...</div>;
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none";
+  const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none";
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="bg-purple-600 text-white px-6 py-3 rounded-t-xl">
+      <div className="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-xl">
         <h2 className="text-lg font-semibold text-center">Inside Story - Society Configuration</h2>
       </div>
       <div className="p-6 space-y-6">
@@ -85,8 +85,8 @@ export default function InsideStoryPage() {
 
         {/* Basic Info */}
         <fieldset className="border border-gray-200 rounded-lg p-4">
-          <legend className="text-sm font-semibold text-purple-700 px-2">Society Information</legend>
-          <div className="grid grid-cols-3 gap-4">
+          <legend className="text-sm font-semibold text-teal-700 px-2">Society Information</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Society Name *</label>
               <input type="text" value={form.name} onChange={(e) => update("name", e.target.value)} className={inputClass} />
@@ -126,8 +126,8 @@ export default function InsideStoryPage() {
 
         {/* Officers & Tax */}
         <fieldset className="border border-gray-200 rounded-lg p-4">
-          <legend className="text-sm font-semibold text-purple-700 px-2">Officers & Tax</legend>
-          <div className="grid grid-cols-3 gap-4">
+          <legend className="text-sm font-semibold text-teal-700 px-2">Officers & Tax</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Secretary Name</label>
               <input type="text" value={form.secretaryName || ""} onChange={(e) => update("secretaryName", e.target.value)} className={inputClass} />
@@ -153,8 +153,8 @@ export default function InsideStoryPage() {
 
         {/* Billing & Interest */}
         <fieldset className="border border-gray-200 rounded-lg p-4">
-          <legend className="text-sm font-semibold text-purple-700 px-2">Billing & Interest Configuration</legend>
-          <div className="grid grid-cols-3 gap-4">
+          <legend className="text-sm font-semibold text-teal-700 px-2">Billing & Interest Configuration</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Billing Frequency</label>
               <select value={form.billingFrequency} onChange={(e) => update("billingFrequency", e.target.value)} className={inputClass}>
@@ -200,8 +200,8 @@ export default function InsideStoryPage() {
 
         {/* Bill Customization */}
         <fieldset className="border border-gray-200 rounded-lg p-4">
-          <legend className="text-sm font-semibold text-purple-700 px-2">Bill Customization</legend>
-          <div className="grid grid-cols-3 gap-4">
+          <legend className="text-sm font-semibold text-teal-700 px-2">Bill Customization</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Bill Prefix</label>
               <input type="text" value={form.billPrefix} onChange={(e) => update("billPrefix", e.target.value)} className={inputClass} />
@@ -222,7 +222,7 @@ export default function InsideStoryPage() {
         </fieldset>
 
         <div className="flex justify-center">
-          <button onClick={handleSave} disabled={saving} className="bg-purple-600 text-white px-10 py-2.5 rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50">
+          <button onClick={handleSave} disabled={saving} className="bg-teal-600 text-white px-10 py-2.5 rounded-lg hover:bg-teal-700 transition font-medium disabled:opacity-50">
             {saving ? "Saving..." : "Save Configuration"}
           </button>
         </div>

@@ -94,7 +94,7 @@ function layout(societyName: string, body: string): string {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
           <!-- Header -->
           <tr>
-            <td style="background-color:#7c3aed;padding:24px 32px;">
+            <td style="background-color:#1e3a5f;padding:24px 32px;">
               <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">${societyName}</h1>
             </td>
           </tr>
@@ -159,8 +159,8 @@ export async function sendBillNotification(
       </tr>
       ${itemRows}
       <tr style="background-color:#f3f0ff;">
-        <td style="padding:12px;color:#7c3aed;font-size:15px;font-weight:700;">Total</td>
-        <td style="padding:12px;color:#7c3aed;font-size:15px;font-weight:700;text-align:right;">${formatINR(bill.totalAmount)}</td>
+        <td style="padding:12px;color:#1e3a5f;font-size:15px;font-weight:700;">Total</td>
+        <td style="padding:12px;color:#1e3a5f;font-size:15px;font-weight:700;text-align:right;">${formatINR(bill.totalAmount)}</td>
       </tr>
     </table>
 
