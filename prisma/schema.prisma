@@ -1,0 +1,402 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Society (multi-tenant root) ───────────────────────────────
+model Society {
+  id              String   @id @default(cuid())
+  name            String
+  regNo           String?
+  address         String?
+  city            String?
+  state           String?
+  pincode         String?
+  phone           String?
+  email           String?
+  financialYear   String   @default("2024-25")
+  // Officers
+  secretaryName   String?
+  chairmanName    String?
+  // Tax info
+  panNo           String?
+  gstNo           String?
+  // Billing config
+  billingFrequency String  @default("MONTHLY") // MONTHLY, QUARTERLY, HALF_YEARLY, YEARLY
+  // Interest config
+  interestType    String   @default("SIMPLE") // SIMPLE, COMPOUND
+  interestRate    Float    @default(21)        // % per annum
+  interestMethod  String   @default("PER_DAY") // PER_DAY, PER_MONTH
+  applyGST        Boolean @default(false)
+  gstRate         Float    @default(18)
+  gracePeriodDays Int      @default(0)
+  // Bill customization
+  billNote        String?  // custom note on bills
+  billPrefix      String   @default("BILL")
+  receiptPrefix   String   @default("RCP")
+  paymentPrefix   String   @default("PAY")
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  users            User[]
+  buildings        Building[]
+  members          Member[]
+  units            Unit[]
+  ledgerHeads      LedgerHead[]
+  headSubGroups    HeadSubGroup[]
+  tariffs          Tariff[]
+  bills            Bill[]
+  receipts         Receipt[]
+  payments         Payment[]
+  journalVouchers  JournalVoucher[]
+  shareCertificates ShareCertificate[]
+  bankAccounts     BankAccount[]
+  cashEntries      CashEntry[]
+  bankEntries      BankEntry[]
+  memberTransfers  MemberTransfer[]
+}
+
+// ─── User / Auth ───────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  password  String
+  name      String
+  role      Role     @default(ADMIN)
+  societyId String
+  society   Society  @relation(fields: [societyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MEMBER
+}
+
+// ─── Building Record ───────────────────────────────────────────
+model Building {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  address     String?
+  wings       String?
+  totalFloors Int?
+  societyId   String
+  society     Society  @relation(fields: [societyId], references: [id])
+  units       Unit[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Unit {
+  id         String   @id @default(cuid())
+  unitNo     String
+  floor      Int?
+  wing       String?
+  type       UnitType @default(RESIDENTIAL)
+  area       Float?       // total area sq ft
+  carpetArea Float?       // carpet area sq ft
+  buildingId String
+  building   Building @relation(fields: [buildingId], references: [id])
+  societyId  String
+  society    Society  @relation(fields: [societyId], references: [id])
+  memberId   String?
+  member     Member?  @relation(fields: [memberId], references: [id])
+  bills      Bill[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum UnitType {
+  RESIDENTIAL
+  COMMERCIAL
+}
+
+// ─── Member Record ─────────────────────────────────────────────
+model Member {
+  id              String   @id @default(cuid())
+  memberNo        String?  // member registration number
+  name            String
+  email           String?
+  phone           String?
+  address         String?
+  occupation      String?
+  aadhaarNo       String?
+  panNo           String?
+  nomineeName     String?
+  nomineeRelation String?
+  dateOfEntry     DateTime @default(now())
+  isActive        Boolean  @default(true)
+  // Opening balances
+  openingPrincipal Float   @default(0)
+  openingInterest  Float   @default(0)
+  openingTax       Float   @default(0)
+
+  societyId       String
+  society         Society  @relation(fields: [societyId], references: [id])
+
+  units             Unit[]
+  receipts          Receipt[]
+  bills             Bill[]
+  shareCertificates ShareCertificate[]
+  journalVouchers   JournalVoucher[]
+  transfersFrom     MemberTransfer[] @relation("TransferFrom")
+  transfersTo       MemberTransfer[] @relation("TransferTo")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Member Transfer ───────────────────────────────────────────
+model MemberTransfer {
+  id            String   @id @default(cuid())
+  transferDate  DateTime @default(now())
+  unitId        String
+  fromMemberId  String
+  fromMember    Member   @relation("TransferFrom", fields: [fromMemberId], references: [id])
+  toMemberId    String
+  toMember      Member   @relation("TransferTo", fields: [toMemberId], references: [id])
+  notes         String?
+  societyId     String
+  society       Society  @relation(fields: [societyId], references: [id])
+  createdAt     DateTime @default(now())
+}
+
+// ─── Accounting: Ledger Heads & Sub Groups ─────────────────────
+model HeadSubGroup {
+  id            String       @id @default(cuid())
+  name          String
+  code          String?
+  groupType     String       @default("INCOME") // INCOME, EXPENSE
+  societyId     String
+  society       Society      @relation(fields: [societyId], references: [id])
+  heads         LedgerHead[]
+  createdAt     DateTime     @default(now())
+}
+
+model LedgerHead {
+  id             String        @id @default(cuid())
+  name           String
+  code           String?
+  type           LedgerType    @default(EXPENSE)
+  openingBalance Float         @default(0)
+  subGroupId     String?
+  subGroup       HeadSubGroup? @relation(fields: [subGroupId], references: [id])
+  societyId      String
+  society        Society       @relation(fields: [societyId], references: [id])
+  tariffs        Tariff[]
+  journalLines   JournalLine[]
+  createdAt      DateTime      @default(now())
+}
+
+enum LedgerType {
+  INCOME
+  EXPENSE
+  ASSET
+  LIABILITY
+}
+
+// ─── Tariffs (maintenance charges) ─────────────────────────────
+model Tariff {
+  id           String     @id @default(cuid())
+  name         String
+  amount       Float
+  frequency    String     @default("MONTHLY")
+  ledgerHeadId String?
+  ledgerHead   LedgerHead? @relation(fields: [ledgerHeadId], references: [id])
+  sortOrder    Int        @default(0)
+  societyId    String
+  society      Society    @relation(fields: [societyId], references: [id])
+  billItems    BillItem[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+// ─── Bills ─────────────────────────────────────────────────────
+model Bill {
+  id              String     @id @default(cuid())
+  billNo          String
+  date            DateTime   @default(now())
+  dueDate         DateTime?
+  month           String     // e.g. "April 2024"
+  totalAmount     Float      @default(0)
+  interestAmount  Float      @default(0)
+  taxAmount       Float      @default(0)
+  paidAmount      Float      @default(0)
+  status          BillStatus @default(UNPAID)
+  billType        BillType   @default(REGULAR)
+  memberId        String
+  member          Member     @relation(fields: [memberId], references: [id])
+  unitId          String
+  unit            Unit       @relation(fields: [unitId], references: [id])
+  societyId       String
+  society         Society    @relation(fields: [societyId], references: [id])
+  items           BillItem[]
+  receipts        Receipt[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+enum BillStatus {
+  UNPAID
+  PARTIAL
+  PAID
+}
+
+enum BillType {
+  REGULAR
+  SUPPLEMENTARY
+}
+
+model BillItem {
+  id       String  @id @default(cuid())
+  name     String
+  amount   Float
+  billId   String
+  bill     Bill    @relation(fields: [billId], references: [id])
+  tariffId String?
+  tariff   Tariff? @relation(fields: [tariffId], references: [id])
+}
+
+// ─── Receipts (payments received) ──────────────────────────────
+model Receipt {
+  id            String      @id @default(cuid())
+  receiptNo     String
+  date          DateTime    @default(now())
+  amount        Float
+  paymentMode   PaymentMode @default(CASH)
+  chequeNo      String?
+  bankName      String?
+  notes         String?
+  memberId      String
+  member        Member      @relation(fields: [memberId], references: [id])
+  billId        String?
+  bill          Bill?       @relation(fields: [billId], references: [id])
+  societyId     String
+  society       Society     @relation(fields: [societyId], references: [id])
+  createdAt     DateTime    @default(now())
+}
+
+enum PaymentMode {
+  CASH
+  CHEQUE
+  BANK_TRANSFER
+  ONLINE
+}
+
+// ─── Payments (society paying out) ─────────────────────────────
+model Payment {
+  id          String      @id @default(cuid())
+  voucherNo   String
+  date        DateTime    @default(now())
+  amount      Float
+  payee       String
+  description String?
+  paymentMode PaymentMode @default(CASH)
+  chequeNo    String?
+  bankName    String?
+  societyId   String
+  society     Society     @relation(fields: [societyId], references: [id])
+  createdAt   DateTime    @default(now())
+}
+
+// ─── Journal Voucher ───────────────────────────────────────────
+model JournalVoucher {
+  id        String        @id @default(cuid())
+  voucherNo String
+  date      DateTime      @default(now())
+  notes     String?
+  memberId  String?
+  member    Member?       @relation(fields: [memberId], references: [id])
+  societyId String
+  society   Society       @relation(fields: [societyId], references: [id])
+  lines     JournalLine[]
+  createdAt DateTime      @default(now())
+}
+
+model JournalLine {
+  id           String         @id @default(cuid())
+  type         JournalLineType
+  amount       Float
+  ledgerHeadId String
+  ledgerHead   LedgerHead     @relation(fields: [ledgerHeadId], references: [id])
+  voucherId    String
+  voucher      JournalVoucher @relation(fields: [voucherId], references: [id])
+}
+
+enum JournalLineType {
+  DEBIT
+  CREDIT
+}
+
+// ─── Share Certificate ─────────────────────────────────────────
+model ShareCertificate {
+  id                      String    @id @default(cuid())
+  serialNo                String
+  certificateNo           String?
+  date                    DateTime  @default(now())
+  numberOfShares          Int       @default(1)
+  valueOfShare            Float     @default(0)
+  regNoOfTransferor       String?
+  dateOfPaymentEntrance   DateTime?
+  membershipCessationDate DateTime?
+  cessationReason         String?
+  remark                  String?
+  memberId                String
+  member                  Member    @relation(fields: [memberId], references: [id])
+  societyId               String
+  society                 Society   @relation(fields: [societyId], references: [id])
+  createdAt               DateTime  @default(now())
+}
+
+// ─── Bank Account ──────────────────────────────────────────────
+model BankAccount {
+  id          String      @id @default(cuid())
+  bankName    String
+  accountNo   String
+  ifscCode    String?
+  branch      String?
+  balance     Float       @default(0)
+  societyId   String
+  society     Society     @relation(fields: [societyId], references: [id])
+  bankEntries BankEntry[]
+  createdAt   DateTime    @default(now())
+}
+
+model BankEntry {
+  id            String      @id @default(cuid())
+  date          DateTime    @default(now())
+  particular    String
+  receipt       Float       @default(0)
+  payment       Float       @default(0)
+  balance       Float       @default(0)
+  chequeNo      String?
+  isReconciled  Boolean     @default(false)
+  bankAccountId String
+  bankAccount   BankAccount @relation(fields: [bankAccountId], references: [id])
+  societyId     String
+  society       Society     @relation(fields: [societyId], references: [id])
+  createdAt     DateTime    @default(now())
+}
+
+// ─── Cash Entry ────────────────────────────────────────────────
+model CashEntry {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  voucherNo String?
+  type      String?
+  particular String
+  receipt   Float    @default(0)
+  payment   Float    @default(0)
+  balance   Float    @default(0)
+  societyId String
+  society   Society  @relation(fields: [societyId], references: [id])
+  createdAt DateTime @default(now())
+}
