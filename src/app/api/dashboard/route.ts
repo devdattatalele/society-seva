@@ -54,10 +54,11 @@ export async function GET() {
   ]);
 
   // Monthly receipt data for trial balance chart (current FY)
-  const now = new Date();
-  const fyStart = now.getMonth() >= 3
-    ? new Date(now.getFullYear(), 3, 1)
-    : new Date(now.getFullYear() - 1, 3, 1);
+  // Use society's configured financial year instead of system date
+  const society = await prisma.society.findUnique({ where: { id: societyId }, select: { financialYear: true } });
+  const fyString = society?.financialYear || "2024-25"; // e.g. "2024-25"
+  const fyStartYear = parseInt(fyString.split("-")[0], 10); // 2024
+  const fyStart = new Date(fyStartYear, 3, 1); // April 1 of start year
 
   const monthlyReceipts = await prisma.receipt.groupBy({
     by: ["date"],
